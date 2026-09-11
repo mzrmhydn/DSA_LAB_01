@@ -1,36 +1,53 @@
-// Task 5: Read 6 integers and reverse them in place (no second array).
+// Task 5: Read 6 integers and reverse them in place,
+// without using another array and without loops in the reversal logic.
 
 #include <iostream>
 using namespace std;
+
+// Swap the outer pair, then hand the smaller inner problem to itself.
+// Base case: the markers have met or crossed, so nothing is left to swap.
+void reverseArray(int arr[], int left, int right) {
+    if (left >= right) {
+        return;
+    }
+
+    int temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+
+    reverseArray(arr, left + 1, right - 1);
+}
+
+// Recursive printing, to keep the whole task loop-free.
+void printArray(int arr[], int i, int n) {
+    if (i >= n) {
+        cout << "\n";
+        return;
+    }
+    cout << arr[i] << " ";
+    printArray(arr, i + 1, n);
+}
+
+// Recursive input as well.
+void readArray(int arr[], int i, int n) {
+    if (i >= n) {
+        return;
+    }
+    cin >> arr[i];
+    readArray(arr, i + 1, n);
+}
 
 int main() {
     const int SIZE = 6;
     int numbers[SIZE];
 
     cout << "Enter 6 integers: ";
-    for (int i = 0; i < SIZE; i++) {
-        cin >> numbers[i];
-    }
+    readArray(numbers, 0, SIZE);
 
-    // Walk two markers towards each other and swap the pair they point at.
-    // Only a single temp variable is used, never a second array.
-    int left = 0;
-    int right = SIZE - 1;
-
-    while (left < right) {
-        int temp = numbers[left];
-        numbers[left] = numbers[right];
-        numbers[right] = temp;
-
-        left++;
-        right--;
-    }
+    reverseArray(numbers, 0, SIZE - 1);
 
     cout << "Reversed array: ";
-    for (int i = 0; i < SIZE; i++) {
-        cout << numbers[i] << " ";
-    }
-    cout << "\n";
+    printArray(numbers, 0, SIZE);
 
     return 0;
 }
